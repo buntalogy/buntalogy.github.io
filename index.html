@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUNTA</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .animate {
+            display: block;
+            text-decoration: none;
+            color: white;
+        }
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="text-container">
+        <div class="animate bold">BUNTA</div>
+        <a href="portfolio.html" class="animate">Portfolio</a>
+        <a href="https://github.com/buntalogy" class="animate">Github</a>
+        <a href="https://x.com/buntalogy" class="animate">X</a>
+    </div>
+
+    <script>
+        function randomChar() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:',.<>?";
+            return chars[Math.floor(Math.random() * chars.length)];
+        }
+
+        function animateText(element) {
+            const originalText = element.textContent;
+            const textArray = originalText.split("");
+            const indices = Array.from({length: Math.ceil(textArray.length * 0.25)}, () => Math.floor(Math.random() * textArray.length));
+
+            let interval = setInterval(() => {
+                element.textContent = textArray.map((char, index) => indices.includes(index) ? randomChar() : char).join("");
+            }, 50);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                element.textContent = originalText;
+            }, 1000);
+        }
+
+        function triggerAnimation() {
+            document.querySelectorAll(".animate").forEach(animateText);
+        }
+
+        function scheduleRandomAnimation() {
+            setTimeout(() => {
+                triggerAnimation();
+                scheduleRandomAnimation();
+            }, Math.random() * (4000 - 2000) + 2000);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            triggerAnimation();
+            scheduleRandomAnimation();
+        });
+
+        document.addEventListener("click", (event) => {
+            if (event.target === document.body || event.target === document.getElementById("text-container")) {
+                triggerAnimation();
+            }
+        });
+    </script>
+</body>
+</html>

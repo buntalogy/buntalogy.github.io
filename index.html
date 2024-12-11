@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>BUNTA</title>
     <style>
       body {
@@ -16,19 +16,31 @@
           justify-content: center;
           height: 100vh;
       }
+
+      h1.bold {
+          font-weight: bold;
+          margin: 0; 
+      }
+
+      #text-container > * + * {
+          margin-top: 10px;
+      }
+
       .animate {
           display: block;
           text-decoration: none;
           color: white;
+          transition: transform 0.2s ease;
       }
-      .bold {
-          font-weight: bold;
+
+      #text-container a.animate:hover {
+          transform: translateX(5px);
       }
     </style>
   </head>
   <body>
     <div id="text-container">
-      <div class="animate bold">BUNTA</div>
+      <h1 class="animate bold">BUNTA</h1>
       <a href="portfolio.html" class="animate">Portfolio</a>
       <a href="https://github.com/buntalogy" class="animate">Github</a>
       <a href="https://x.com/buntalogy" class="animate">X</a>
@@ -43,7 +55,7 @@
       function animateText(element) {
           const originalText = element.textContent;
           const textArray = originalText.split("");
-          const indices = Array.from({length: Math.ceil(textArray.length * 0.25)}, () => Math.floor(Math.random() * textArray.length));
+          const indices = Array.from({ length: Math.ceil(textArray.length * 0.25) }, () => Math.floor(Math.random() * textArray.length));
 
           let interval = setInterval(() => {
               element.textContent = textArray.map((char, index) => indices.includes(index) ? randomChar() : char).join("");

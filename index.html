@@ -42,8 +42,8 @@
     <div id="text-container">
       <h1 class="animate bold">BUNTA</h1>
       <a href="portfolio.html" class="animate">Portfolio</a>
-      <a href="https://github.com/buntalogy" class="animate">Github</a>
-      <a href="https://x.com/buntalogy" class="animate">X</a>
+      <a href="https://github.com/buntalogy" class="animate" target="_blank">Github</a>
+      <a href="https://x.com/buntalogy" class="animate" target="_blank">X</a>
     </div>
 
     <script>
@@ -55,33 +55,33 @@
       function animateText(element) {
           const originalText = element.textContent;
           const textArray = originalText.split("");
-          const indices = Array.from({ length: Math.ceil(textArray.length * 0.25) }, () => Math.floor(Math.random() * textArray.length));
+						 const indices = Array.from({ length: Math.ceil(textArray.length * 0.25) }, () => Math.floor(Math.random() * textArray.length));
 
-          let interval = setInterval(() => {
-              element.textContent = textArray.map((char, index) => indices.includes(index) ? randomChar() : char).join("");
-          }, 50);
+						 let interval = setInterval(() => {
+						 element.textContent = textArray.map((char, index) => indices.includes(index) ? randomChar() : char).join("");
+																			    }, 50);
 
-          setTimeout(() => {
-              clearInterval(interval);
-              element.textContent = originalText;
-          }, 1000);
-      }
+																			    setTimeout(() => {
+																			    clearInterval(interval);
+																			    element.textContent = originalText;
+																			    }, 1000);
+																			    }
 
-      function triggerAnimation() {
-          document.querySelectorAll(".animate").forEach(animateText);
-      }
+																			    function triggerAnimation() {
+																			    document.querySelectorAll(".animate").forEach(animateText);
+																								}
 
-      function scheduleRandomAnimation() {
-          setTimeout(() => {
-              triggerAnimation();
-              scheduleRandomAnimation();
-          }, Math.random() * (4000 - 2000) + 2000);
-      }
+																								function scheduleRandomAnimation() {
+																								setTimeout(() => {
+																								triggerAnimation();
+																								scheduleRandomAnimation();
+																								}, Math.random() * (4000 - 2000) + 2000);
+																								}
 
-      document.addEventListener("DOMContentLoaded", () => {
-          triggerAnimation();
-          scheduleRandomAnimation();
-      });
-      </script>
+																								document.addEventListener("DOMContentLoaded", () => {
+																													    triggerAnimation();
+																													    scheduleRandomAnimation();
+																													    });
+																													    </script>
   </body>
 </html>

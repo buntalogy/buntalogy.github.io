@@ -138,7 +138,7 @@
       canvas.addEventListener("mouseup", () => { isMouseDown = false; });
       canvas.addEventListener("mouseleave", () => { isMouseDown = false; });
       function simulateInitialEvolution() {
-        const iterations = Math.floor(16000 / simulationInterval);
+        const iterations = Math.floor(8000 / simulationInterval);
         for (let i = 0; i < iterations; i++) {
           updateGrid();
         }

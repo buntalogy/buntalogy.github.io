@@ -11,51 +11,42 @@
           margin: 32px 64px;
           font-family: monospace;
       }
-
       main {
           max-width: 1200px;
           margin: auto;
       }
-
       #header-container > * + * {
           margin-top: 10px;
       }
-
       h1.bold {
           font-weight: bold;
           margin: 0;
       }
-
       .animate {
           display: inline-block;
           text-decoration: none;
           color: white;
           transition: transform 0.2s ease;
       }
-
       .gallery {
           columns: 4 200px;
           column-gap: 16px;
           margin-top: 20px; 
       }
-
       .gallery .img-container {
           margin-bottom: 16px;
           overflow: hidden;
           cursor: pointer;
       }
-
       .gallery img {
           width: 100%;
           display: block;
           transition: transform 0.3s ease;
           border-radius: 8px;
       }
-
       .gallery .img-container:hover img {
           transform: scale(1.05);
       }
-
       .lightbox {
           display: none;
           position: fixed;
@@ -68,12 +59,10 @@
           justify-content: center;
           align-items: center;
       }
-
       .lightbox img {
           max-width: 90%;
           max-height: 90%;
       }
-
       a {
           color: white;
           text-decoration: none;
@@ -88,47 +77,12 @@
         </h1>
         <div class="animate">Portfolio</div>
       </div>
-
       <div class="gallery" id="gallery"></div>
       <div class="lightbox" id="lightbox">
         <img id="lightboxImage" src="" alt="Lightbox Image">
       </div>
     </main>
     <script>
-      function randomChar() {
-          const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:',.<>?";
-          return chars[Math.floor(Math.random() * chars.length)];
-      }
-
-      function animateText(element) {
-          const originalText = element.textContent;
-          const textArray = originalText.split("");
-          const indices = Array.from({ length: Math.ceil(textArray.length * 0.25) }, () => Math.floor(Math.random() * textArray.length));
-          let interval = setInterval(() => {
-              element.textContent = textArray.map((char, index) => indices.includes(index) ? randomChar() : char).join("");
-          }, 50);
-          setTimeout(() => {
-              clearInterval(interval);
-              element.textContent = originalText;
-          }, 1000);
-      }
-
-      function triggerAnimation() {
-          document.querySelectorAll(".animate").forEach(animateText);
-      }
-
-      function scheduleRandomAnimation() {
-          setTimeout(() => {
-              triggerAnimation();
-              scheduleRandomAnimation();
-          }, Math.random() * (4000 - 2000) + 2000);
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-          triggerAnimation();
-          scheduleRandomAnimation();
-      });
-
       const imageUrls = [
           "images/image_1.png",
           "images/image_2.png",
@@ -182,13 +136,11 @@
           "images/image_53.png",
           "images/image_54.png"
       ];
-
       const gallery = document.getElementById('gallery');
       const lightbox = document.getElementById('lightbox');
       const lightboxImage = document.getElementById('lightboxImage');
       let currentImageIndex = 0;
       let shuffledUrls = [];
-
       function shuffleArray(array) {
           const shuffled = [...array];
           for (let i = shuffled.length - 1; i > 0; i--) {
@@ -197,7 +149,6 @@
           }
           return shuffled;
       }
-
       function createImageElement(url, index) {
           const container = document.createElement('div');
           container.className = 'img-container';
@@ -208,31 +159,25 @@
           container.addEventListener('click', () => openLightbox(index));
           return container;
       }
-
       function openLightbox(index) {
           currentImageIndex = index;
           updateLightboxImage();
           lightbox.style.display = 'flex';
       }
-
       function closeLightbox() {
           lightbox.style.display = 'none';
       }
-
       function updateLightboxImage() {
           lightboxImage.src = shuffledUrls[currentImageIndex];
       }
-
       function nextImage() {
           currentImageIndex = (currentImageIndex + 1) % shuffledUrls.length;
           updateLightboxImage();
       }
-
       function previousImage() {
           currentImageIndex = (currentImageIndex - 1 + shuffledUrls.length) % shuffledUrls.length;
           updateLightboxImage();
       }
-
       function initializeGallery() {
           shuffledUrls = shuffleArray(imageUrls);
           shuffledUrls.forEach((url, index) => {
@@ -240,14 +185,14 @@
           });
           const observer = new IntersectionObserver((entries) => {
               entries.forEach(entry => {
-		  if (entry.isIntersecting) {
-		      const img = entry.target.querySelector('img');
-		      if (img && img.dataset.src) {
-			  img.src = img.dataset.src;
-			  img.removeAttribute('data-src');
-		      }
-		      observer.unobserve(entry.target);
-		  }
+                if (entry.isIntersecting) {
+                  const img = entry.target.querySelector('img');
+                  if (img && img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                  }
+                  observer.unobserve(entry.target);
+                }
               });
           }, {
               rootMargin: "50px 0px",
@@ -258,26 +203,23 @@
               observer.observe(container);
           });
       }
-
       lightbox.addEventListener('click', closeLightbox);
-
       document.addEventListener('keydown', (e) => {
           if (lightbox.style.display === 'flex') {
               switch (e.key) {
               case 'Escape':
-		  closeLightbox();
-		  break;
+                  closeLightbox();
+                  break;
               case 'ArrowRight':
-		  nextImage();
-		  break;
+                  nextImage();
+                  break;
               case 'ArrowLeft':
-		  previousImage();
-		  break;
+                  previousImage();
+                  break;
               }
           }
       });
-
       initializeGallery();
-      </script>
+    </script>
   </body>
 </html>

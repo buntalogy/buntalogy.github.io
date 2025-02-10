@@ -1,7 +1,7 @@
 const cellSize = 10,
       brushRadius = 2,
       simulationInterval = 100,
-      fadeFactor = 0.95;
+      fadeFactor = 0.9;
 const canvas = document.getElementById("canvas"),
       ctx = canvas.getContext("2d");
 let grid = [],

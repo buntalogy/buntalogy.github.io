@@ -2,7 +2,7 @@ const cellSize = 10,
       brushRadius = 2,
       simulationInterval = 100,
       fadeFactor = 0.95;
-const asciiChars = "oO";
+const asciiChars = "/o";
 const canvas = document.getElementById("canvas"),
       ctx = canvas.getContext("2d");
 let grid = [],
@@ -34,17 +34,15 @@ function initGrid() {
     for (let p = 0; p < numPatches; p++) {
         const centerX = Math.floor(Math.random() * gridCols);
         const centerY = Math.floor(Math.random() * gridRows);
-        const baseHue = Math.floor(Math.random() * 360);
         for (let i = 0; i < 12; i++) {
             const dx = Math.floor(Math.random() * 5) - 2;
             const dy = Math.floor(Math.random() * 5) - 2;
             const x = centerX + dx,
                   y = centerY + dy;
             if (x >= 0 && x < gridCols && y >= 0 && y < gridRows) {
-                const hueVariation = Math.floor(Math.random() * 21) - 10;
                 grid[y][x] = {
                     alive: true,
-                    hue: (baseHue + hueVariation + 360) % 360,
+                    hue: 0,          // Not used in BW mode.
                     decay: 1,
                     char: asciiChars[Math.floor(Math.random() * asciiChars.length)]
                 };
@@ -58,25 +56,20 @@ function updateGrid() {
     for (let y = 0; y < gridRows; y++) {
         newGrid[y] = [];
         for (let x = 0; x < gridCols; x++) {
-            let aliveNeighbors = 0,
-                hueSum = 0;
+            let aliveNeighbors = 0;
             for (let dy = -1; dy <= 1; dy++) {
                 for (let dx = -1; dx <= 1; dx++) {
                     if (dx === 0 && dy === 0) continue;
                     const nx = (x + dx + gridCols) % gridCols;
                     const ny = (y + dy + gridRows) % gridRows;
-                    if (grid[ny][nx].alive) {
-                        aliveNeighbors++;
-                        hueSum += grid[ny][nx].hue;
-                    }
+                    if (grid[ny][nx].alive) aliveNeighbors++;
                 }
             }
             const cell = grid[y][x];
-            let newCell = { alive: false, hue: cell.hue, decay: cell.decay, char: cell.char };
+            let newCell = { alive: false, hue: 0, decay: cell.decay, char: cell.char };
             if (cell.alive) {
                 if (aliveNeighbors === 2 || aliveNeighbors === 3) {
                     newCell.alive = true;
-                    newCell.hue = aliveNeighbors > 0 ? (cell.hue + hueSum) / (aliveNeighbors + 1) : cell.hue;
                     newCell.decay = 1;
                     newCell.char = cell.char || asciiChars[Math.floor(Math.random() * asciiChars.length)];
                 } else {
@@ -86,7 +79,6 @@ function updateGrid() {
             } else {
                 if (aliveNeighbors === 3) {
                     newCell.alive = true;
-                    newCell.hue = hueSum / 3;
                     newCell.decay = 1;
                     newCell.char = asciiChars[Math.floor(Math.random() * asciiChars.length)];
                 } else {
@@ -102,9 +94,11 @@ function updateGrid() {
 }
 
 function drawGrid() {
+    // Fade the previous frame.
     ctx.fillStyle = "rgba(0,0,0,0.3)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
+    // Set text settings.
     ctx.font = cellSize + "px monospace";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -113,7 +107,8 @@ function drawGrid() {
         for (let x = 0; x < gridCols; x++) {
             const cell = grid[y][x];
             if (cell.decay > 0 && cell.char) {
-                ctx.fillStyle = `hsla(${cell.hue}, 100%, 20%, ${cell.decay})`;
+                // Always draw in white (black & white mode).
+                ctx.fillStyle = `rgba(255, 255, 255, ${cell.decay})`;
                 ctx.fillText(cell.char, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
             }
         }
@@ -126,7 +121,6 @@ function paintAt(clientX, clientY) {
           my = clientY - rect.top;
     const col = Math.floor(mx / cellSize),
           row = Math.floor(my / cellSize);
-    const hue = (mx / canvas.width) * 360;
     for (let j = -brushRadius; j <= brushRadius; j++) {
         for (let i = -brushRadius; i <= brushRadius; i++) {
             const r = row + j,
@@ -135,7 +129,7 @@ function paintAt(clientX, clientY) {
                 if (Math.sqrt(i * i + j * j) <= brushRadius) {
                     grid[r][c] = { 
                         alive: true, 
-                        hue: hue, 
+                        hue: 0, // Not used.
                         decay: 1,
                         char: asciiChars[Math.floor(Math.random() * asciiChars.length)]
                     };

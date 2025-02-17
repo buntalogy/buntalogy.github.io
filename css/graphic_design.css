@@ -8,13 +8,11 @@ main {
     max-width: 1200px;
     margin: auto;
 }
-#header-container > * + * {
-    margin-top: 10px;
+
+pre {
+    margin: 0 0 0px 0;
 }
-h1.bold {
-    font-weight: bold;
-    margin: 0;
-}
+
 .animate {
     display: inline-block;
     text-decoration: none;

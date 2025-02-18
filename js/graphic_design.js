@@ -103,8 +103,8 @@ function initializeGallery() {
             if (entry.isIntersecting) {
                 const img = entry.target.querySelector('img');
                 if (img && img.dataset.src) {
-		    img.src = img.dataset.src;
-		    img.removeAttribute('data-src');
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
                 }
                 observer.unobserve(entry.target);
             }
@@ -122,15 +122,15 @@ lightbox.addEventListener('click', closeLightbox);
 document.addEventListener('keydown', (e) => {
     if (lightbox.style.display === 'flex') {
         switch (e.key) {
-        case 'Escape':
-            closeLightbox();
-            break;
-        case 'ArrowRight':
-            nextImage();
-            break;
-        case 'ArrowLeft':
-            previousImage();
-            break;
+            case 'Escape':
+                closeLightbox();
+                break;
+            case 'ArrowRight':
+                nextImage();
+                break;
+            case 'ArrowLeft':
+                previousImage();
+                break;
         }
     }
 });

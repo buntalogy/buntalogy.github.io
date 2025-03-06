@@ -49,38 +49,38 @@ const imageUrls = [
     "https://i.postimg.cc/d121sHCh/image-6.png",
     "https://i.postimg.cc/d0T3Xttm/image-7.png",
     "https://i.postimg.cc/HkFsQD4J/image-8.png",
-    "https://i.postimg.cc/gJWzTV7m/image-9.png"
+    "https://i.postimg.cc/gJWzTV7m/image-9.png",
 ];
-const gallery = document.getElementById('gallery');
-const lightbox = document.getElementById('lightbox');
-const lightboxImage = document.getElementById('lightboxImage');
+const gallery = document.getElementById("gallery");
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightboxImage");
 let currentImageIndex = 0;
 let shuffledUrls = [];
 function shuffleArray(array) {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+	const j = Math.floor(Math.random() * (i + 1));
+	[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
 }
 function createImageElement(url, index) {
-    const container = document.createElement('div');
-    container.className = 'img-container';
-    const img = document.createElement('img');
-    img.setAttribute('data-src', url);
-    img.alt = 'Gallery Image';
+    const container = document.createElement("div");
+    container.className = "img-container";
+    const img = document.createElement("img");
+    img.setAttribute("data-src", url);
+    img.alt = "Gallery Image";
     container.appendChild(img);
-    container.addEventListener('click', () => openLightbox(index));
+    container.addEventListener("click", () => openLightbox(index));
     return container;
 }
 function openLightbox(index) {
     currentImageIndex = index;
     updateLightboxImage();
-    lightbox.style.display = 'flex';
+    lightbox.style.display = "flex";
 }
 function closeLightbox() {
-    lightbox.style.display = 'none';
+    lightbox.style.display = "none";
 }
 function updateLightboxImage() {
     lightboxImage.src = shuffledUrls[currentImageIndex];
@@ -90,48 +90,52 @@ function nextImage() {
     updateLightboxImage();
 }
 function previousImage() {
-    currentImageIndex = (currentImageIndex - 1 + shuffledUrls.length) % shuffledUrls.length;
+    currentImageIndex =
+	(currentImageIndex - 1 + shuffledUrls.length) % shuffledUrls.length;
     updateLightboxImage();
 }
 function initializeGallery() {
     shuffledUrls = shuffleArray(imageUrls);
     shuffledUrls.forEach((url, index) => {
-        gallery.appendChild(createImageElement(url, index));
+	gallery.appendChild(createImageElement(url, index));
     });
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target.querySelector('img');
-                if (img && img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                }
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        rootMargin: "50px 0px",
-        threshold: 0.01
-    });
-    const containers = document.querySelectorAll('.img-container');
-    containers.forEach(container => {
-        observer.observe(container);
+    const observer = new IntersectionObserver(
+	(entries) => {
+	    entries.forEach((entry) => {
+		if (entry.isIntersecting) {
+		    const img = entry.target.querySelector("img");
+		    if (img && img.dataset.src) {
+			img.src = img.dataset.src;
+			img.removeAttribute("data-src");
+		    }
+		    observer.unobserve(entry.target);
+		}
+	    });
+	},
+	{
+	    rootMargin: "50px 0px",
+	    threshold: 0.01,
+	},
+    );
+    const containers = document.querySelectorAll(".img-container");
+    containers.forEach((container) => {
+	observer.observe(container);
     });
 }
-lightbox.addEventListener('click', closeLightbox);
-document.addEventListener('keydown', (e) => {
-    if (lightbox.style.display === 'flex') {
-        switch (e.key) {
-            case 'Escape':
-                closeLightbox();
-                break;
-            case 'ArrowRight':
-                nextImage();
-                break;
-            case 'ArrowLeft':
-                previousImage();
-                break;
-        }
+lightbox.addEventListener("click", closeLightbox);
+document.addEventListener("keydown", (e) => {
+    if (lightbox.style.display === "flex") {
+	switch (e.key) {
+	    case "Escape":
+		closeLightbox();
+		break;
+	    case "ArrowRight":
+		nextImage();
+		break;
+	    case "ArrowLeft":
+		previousImage();
+		break;
+	}
     }
 });
 initializeGallery();
